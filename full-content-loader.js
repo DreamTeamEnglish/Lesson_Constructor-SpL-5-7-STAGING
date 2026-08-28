@@ -82,6 +82,11 @@
     window.SPOTLIGHT7_LESSONS=g7;
     window.ALL_LESSONS=[...g5,...g6,...g7];
     window.LESSONS=g6;
+    // Compatibility contract with app.js/enhance-all.js:
+    // app.js renders immediately and expects the lesson-scoped ACTIVITIES array
+    // to exist before enhance-all replaces its contents from buildLessonKit().
+    window.ACTIVITIES=[];
+    // The full 232-item library is a separate catalogue used by activity-library.js.
     window.AI_ACTIVITY_CATALOG=activities;
     window.KA_ACTIVE_GRADE=6;
 
