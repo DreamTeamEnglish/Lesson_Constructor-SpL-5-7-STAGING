@@ -1,0 +1,10 @@
+SPOTLIGHT 5–7 · STAGING v0.6.5
+
+Upload ALL files and the assets folder from this directory to the ROOT of a temporary GitHub repository.
+Recommended repository name: Lesson_Constructor-SpL-5-7-STAGING
+Enable GitHub Pages from the main/root branch.
+
+Before opening staging, first sign in to the existing production CLEAN:
+https://dreamteamenglish.github.io/Lesson_Constructor-SpL-5-7-CLEAN/
+
+Then open the staging GitHub Pages URL. No Supabase config editing is required for this staging smoke test.

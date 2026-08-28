@@ -1,0 +1,30 @@
+@media print{
+  .document h1,.document h2,.document h3{
+    break-after:avoid-page!important;
+    page-break-after:avoid!important;
+  }
+  .document h2+p,.document h2+.purpose,.document h3+p{
+    break-after:avoid-page!important;
+    page-break-after:avoid!important;
+  }
+  .document h2+p+.docblock,.document h2+.purpose+.docblock,
+  .document h3+p+.docblock{
+    break-before:avoid-page!important;
+    page-break-before:avoid!important;
+  }
+  .document .docblock,.document .homework-option,
+  .document .task,.document table tr{
+    break-inside:avoid-page!important;
+    page-break-inside:avoid!important;
+  }
+  .document p,.document li{
+    orphans:3;
+    widows:3;
+  }
+  .homework-option>h2+.situation,
+  .homework-option>h2+.situation+h3,
+  .homework-option>h2+.situation+h3+ol{
+    break-before:avoid-page!important;
+    page-break-before:avoid!important;
+  }
+}

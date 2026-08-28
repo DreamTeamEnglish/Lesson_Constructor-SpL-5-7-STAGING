@@ -1,0 +1,26 @@
+/* Свободный регламент и центральный просмотр документов */
+main.open{grid-template-columns:205px minmax(500px,1fr) 275px}
+.ready.neutral{background:#edf2f8;color:#536177}
+.remove-stage{border:0;background:#fff0f0;color:#9a3434;border-radius:50%;width:27px;height:27px;font-size:19px;flex:0 0 27px}
+.restore-stages{width:100%;border:1px dashed var(--b);background:white;color:var(--b);font-weight:bold;border-radius:8px;padding:11px}
+#drawer{position:fixed;inset:0;z-index:120;background:#071c49c7;padding:20px;display:grid;place-items:center;max-height:none;overflow:hidden}
+#drawer[hidden]{display:none!important}
+.docmodal{width:min(1100px,96vw);height:min(900px,94vh);background:#e7edf6;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 18px 60px #0005}
+.docmodal .paper{background:white;padding:26px;flex:1;max-height:none;overflow:auto;box-shadow:0 4px 14px #071c4920}
+.docmodal .document{font-size:13px;line-height:1.45}
+.docmodal .document h1{font-size:26px;padding-bottom:8px}
+.docmodal .document h2{font-size:18px;padding:7px}
+.docmodal .document table{font-size:11px}
+.doc-actions{display:flex;justify-content:flex-end;gap:8px;padding-top:10px}
+.doc-actions button{padding:10px 16px;border:1px solid var(--b);border-radius:7px;background:white;color:var(--b);font-weight:bold}
+.doc-actions .print{width:auto;margin:0;background:var(--g);color:var(--n);border:0}
+body.modal-open{overflow:hidden}
+.ai-generate-panel{position:relative;width:min(760px,94vw);padding:22px}
+.ai-close{position:absolute;right:14px;top:10px;border:0;background:none;color:#68768a;font-size:28px}
+.ai-result-docs{border:1px solid #d8e0eb;border-radius:9px;overflow:hidden;margin:12px 0}
+.ai-result-docs[hidden]{display:none}
+.ai-result-docs>div{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:11px 13px;background:#fff;border-bottom:1px solid #d8e0eb}
+.ai-result-docs>div:last-child{border-bottom:0}
+.ai-result-docs button{border:1px solid #174b9c;background:white;color:#174b9c;border-radius:6px;padding:7px 12px;font-weight:bold}
+.ai-result-docs:not([hidden]) + .ai-actions #ai-run{display:none}
+@media(max-width:1100px){.docmodal{width:98vw;height:96vh}}
