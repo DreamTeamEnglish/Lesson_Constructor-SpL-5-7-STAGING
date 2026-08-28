@@ -149,6 +149,13 @@
 
   function clearSession(){ localStorage.removeItem(SESSION_KEY); }
 
+  function stagingSessionFresh(session){
+    if(!session?.access_token)return false;
+    const exp=Number(session.expires_at||0);
+    if(!exp)return true;
+    return exp>Math.floor(Date.now()/1000)+30;
+  }
+
   function formatDate(value){
     if(!value)return "—";
     try{
@@ -1009,6 +1016,10 @@
           showStagingNeedSession();
           return;
         }
+        if(!stagingSessionFresh(session)){
+          showStagingNeedSession("Сессия CLEAN устарела. Откройте рабочий CLEAN, дождитесь входа и затем вернитесь сюда и нажмите «Проверить снова». ");
+          return;
+        }
         currentStatus={valid_full:true,is_admin:false,user:session.user||null,access:{}};
         // The token is not trusted here: openApp -> FULL loader -> Yandex Gateway
         // re-checks it against the existing Supabase Gate before any private file is signed.
@@ -1040,6 +1051,12 @@
       clearSession();
       showStart();
     }catch(e){
+      if(cfg.STAGING_EXISTING_SESSION_ONLY){
+        // Never delete the shared production CLEAN session from a staging failure.
+        // The production page owns refresh/re-auth; staging only consumes a fresh token.
+        showStagingNeedSession(e.message||"Не удалось проверить FULL-доступ через Yandex Gateway.");
+        return;
+      }
       clearSession();
       showStart(e.message||"Ошибка запуска.");
     }
