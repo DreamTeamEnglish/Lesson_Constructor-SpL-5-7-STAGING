@@ -27,6 +27,55 @@
 
   const VK_EMAIL_DOMAIN="example.com";
 
+  const ADMIN_CHAT_URL = "https://vk.ru/im?sel=-229391051";
+
+  function buildAccessRequestMessage(){
+    return [
+      "Здравствуйте!",
+      "",
+      "Хочу получить FULL-доступ к Конструктору уроков Spotlight 5–7.",
+      "",
+      "Проект: Конструктор уроков Spotlight 5–7",
+      "Email для входа: __________________",
+      "Если доступ по VK Donut — мой VK ID: __________________",
+      "",
+      "Спасибо!"
+    ].join("\n");
+  }
+
+  function fallbackCopy(text){
+    const area=document.createElement("textarea");
+    area.value=text;
+    area.setAttribute("readonly","");
+    area.style.position="fixed";
+    area.style.opacity="0";
+    document.body.appendChild(area);
+    area.select();
+    try{return Boolean(document.execCommand("copy"));}
+    catch(_){return false;}
+    finally{area.remove();}
+  }
+
+  function requestFullAccess(){
+    const text=buildAccessRequestMessage();
+    const button=$("#clean-request-access");
+    let copyPromise;
+    if(navigator.clipboard?.writeText){
+      copyPromise=navigator.clipboard.writeText(text).then(()=>true).catch(()=>fallbackCopy(text));
+    }else{
+      copyPromise=Promise.resolve(fallbackCopy(text));
+    }
+    window.open(ADMIN_CHAT_URL,"_blank","noopener");
+    copyPromise.then(copied=>{
+      if(button){
+        const original="✉ Написать администратору";
+        button.textContent=copied?"Текст скопирован ✓ · VK открыт":"VK открыт · скопируйте шаблон вручную";
+        setTimeout(()=>{if(button)button.textContent=original;},2200);
+      }
+      if(!copied) alert(text);
+    });
+  }
+
   function normalizeVkId(value){
     const raw=String(value??"").trim();
     const n=Number(raw);
@@ -260,9 +309,15 @@
             <button class="clean-btn gold" id="clean-login-open">Войти</button>
           </div>
           <div class="clean-small">Полный доступ — по приглашению администратора или для участников VK Donut.</div>
+          <section class="clean-admin-help compact">
+            <b>Хотите полный доступ?</b>
+            <span>Готовый текст запроса скопируется автоматически — останется вставить его в сообщение VK и заполнить email / VK ID.</span>
+            <button class="clean-btn gold" id="clean-request-access" type="button" style="margin-top:10px">✉ Написать администратору</button>
+          </section>
         </div>
       </section>`;
     $("#clean-demo").onclick=()=>openApp("DEMO",null);
+    $("#clean-request-access").onclick=requestFullAccess;
     $("#clean-login-open").onclick=()=>{
       if(cfg.STAGING_EXISTING_SESSION_ONLY){
         location.href=String(cfg.PRODUCTION_CLEAN_URL||"https://dreamteamenglish.github.io/Lesson_Constructor-SpL-5-7-CLEAN/");
