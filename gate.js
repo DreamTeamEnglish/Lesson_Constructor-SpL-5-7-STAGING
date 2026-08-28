@@ -263,7 +263,13 @@
         </div>
       </section>`;
     $("#clean-demo").onclick=()=>openApp("DEMO",null);
-    $("#clean-login-open").onclick=()=>showLogin();
+    $("#clean-login-open").onclick=()=>{
+      if(cfg.STAGING_EXISTING_SESSION_ONLY){
+        location.href=String(cfg.PRODUCTION_CLEAN_URL||"https://dreamteamenglish.github.io/Lesson_Constructor-SpL-5-7-CLEAN/");
+        return;
+      }
+      showLogin();
+    };
   }
 
 
@@ -1013,11 +1019,11 @@
       if(cfg.STAGING_EXISTING_SESSION_ONLY){
         const session=readSession();
         if(!session?.access_token){
-          showStagingNeedSession();
+          showStart();
           return;
         }
         if(!stagingSessionFresh(session)){
-          showStagingNeedSession("Сессия CLEAN устарела. Откройте рабочий CLEAN, дождитесь входа и затем вернитесь сюда и нажмите «Проверить снова». ");
+          showStart("FULL-сессия CLEAN устарела. DEMO доступен сразу; для FULL войдите в рабочий CLEAN и затем вернитесь на staging.");
           return;
         }
         currentStatus={valid_full:true,is_admin:false,user:session.user||null,access:{}};
@@ -1053,8 +1059,8 @@
     }catch(e){
       if(cfg.STAGING_EXISTING_SESSION_ONLY){
         // Never delete the shared production CLEAN session from a staging failure.
-        // The production page owns refresh/re-auth; staging only consumes a fresh token.
-        showStagingNeedSession(e.message||"Не удалось проверить FULL-доступ через Yandex Gateway.");
+        // Keep DEMO available even when the shared FULL session or Gateway check fails.
+        showStart(e.message||"FULL сейчас не открылся. DEMO остаётся доступен; для FULL войдите в рабочий CLEAN и попробуйте снова.");
         return;
       }
       clearSession();
